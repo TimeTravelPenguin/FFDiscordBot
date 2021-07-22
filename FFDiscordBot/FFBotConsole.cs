@@ -7,7 +7,7 @@
 // File Name: FFBotConsole.cs
 // 
 // Current Data:
-// 2021-07-22 4:29 PM
+// 2021-07-22 4:33 PM
 // 
 // Creation Date:
 // 2021-07-22 12:30 PM
@@ -54,23 +54,20 @@ namespace FFDiscordBot
       };
 
       _client = new DiscordClient(config);
+      RegisterCommands();
+
+      _client.MessageCreated += ClientOnMessageCreated;
+    }
+
+    private void RegisterCommands()
+    {
       var commands = _client.UseCommandsNext(new CommandsNextConfiguration
       {
         CaseSensitive = false,
         StringPrefixes = new[] {"!"}
       });
 
-      //var classes = Assembly.GetExecutingAssembly()
-      //  .GetTypes()
-      //  .Where(t => t.IsAssignableTo(typeof(BaseCommandModule)))
-      //  .Where(t => t.GetMethods()
-      //    .Any(i => i.GetCustomAttributes(typeof(CommandAttribute)).Any()))
-      //  .ToList();
-
       commands.RegisterCommands(Assembly.GetExecutingAssembly());
-
-
-      _client.MessageCreated += ClientOnMessageCreated;
     }
 
     private static async Task ClientOnMessageCreated(DiscordClient sender, MessageCreateEventArgs e)
